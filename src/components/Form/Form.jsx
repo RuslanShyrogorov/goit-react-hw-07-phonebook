@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FormContact, FormLabel, FormInput, FormButton } from './Form.styled';
 import Button from 'components/Button/Button';
 
@@ -8,7 +9,12 @@ export default class Form extends Component {
     number: '',
   };
 
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
+
   handleChange = e => {
+    // console.log(e.target);
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };

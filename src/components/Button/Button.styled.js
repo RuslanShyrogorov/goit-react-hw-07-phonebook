@@ -4,7 +4,6 @@ export const Btn = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* min-width: ${p => p.theme.space[7]}px; */
   max-width: ${p => p.theme.space[7]}px;
   color: ${p => p.theme.colors.white};
   padding-top: ${p => p.theme.space[2]}px;
@@ -17,5 +16,6 @@ export const Btn = styled.button`
   :hover {
     background-color: ${p => p.theme.colors.accent};
     box-shadow: ${p => p.theme.shadows.btn};
+    cursor: pointer;
   }
 `;
