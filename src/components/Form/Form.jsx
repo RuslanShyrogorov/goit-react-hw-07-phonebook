@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormContact, FormLabel, FormInput, FormButton } from './Form.styled';
+import { FormContact, FormLabel, FormInput } from './Form.styled';
 import Button from 'components/Button/Button';
 
 export default class Form extends Component {
