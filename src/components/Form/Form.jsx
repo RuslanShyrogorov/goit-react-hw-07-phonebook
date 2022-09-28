@@ -59,7 +59,6 @@ export default class Form extends Component {
         />
 
         <Button type="submit" text="Add contact" />
-        {/* <FormButton type="submit">Add contact</FormButton> */}
       </FormContact>
     );
   }

@@ -13,9 +13,6 @@ export default class App extends Component {
       { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-      { id: 'id-5', name: 'Carmen Dias', number: '227-91-26' },
-      { id: 'id-6', name: 'Mencar Bright', number: '227-91-26' },
-      { id: 'id-7', name: 'Angela Devis', number: '333-91-26' },
     ],
     filter: '',
   };
@@ -41,16 +38,9 @@ export default class App extends Component {
     });
   };
 
-  deleteContacts = contactId => {
-    // console.log(contactId);
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
-  };
-
   changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
-    // console.log(e.currentTarget.value);
+    const { value } = e.target;
+    this.setState({ filter: value });
   };
 
   filteredContacts = () => {
@@ -61,10 +51,18 @@ export default class App extends Component {
     );
   };
 
+  deleteContacts = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+    console.log(contactId);
+  };
+
   render() {
     const { filter } = this.state;
     const { changeFilter, filteredContacts, deleteContacts, addContact } = this;
     const visibleContact = filteredContacts();
+
     return (
       <div>
         <MainTitle>Phonebook</MainTitle>
