@@ -17,6 +17,23 @@ export default class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('contacts'));
+    if (contacts?.length) {
+      this.setState({
+        contacts,
+      });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    const { contacts } = this.state;
+
+    if (prevState.contacts !== contacts) {
+      localStorage.setItem('contacts', JSON.stringify(contacts));
+    }
+  }
+
   addContact = newContact => {
     const { contacts } = this.state;
     const duplicateContact = contacts.find(
@@ -27,8 +44,8 @@ export default class App extends Component {
       return window.alert(`${newContact.name} is already in contacts`);
 
     const contact = {
-      ...newContact,
       id: nanoid(),
+      ...newContact,
     };
 
     this.setState(({ contacts }) => {
