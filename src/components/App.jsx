@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { Box } from './Box';
 import Form from './Form/Form';
 import ContactsFilter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
@@ -81,7 +82,16 @@ export default class App extends Component {
     const visibleContact = filteredContacts();
 
     return (
-      <div>
+      <Box
+        width="30%"
+        mt={3}
+        mb={3}
+        ml={6}
+        p={4}
+        bg="white"
+        borderRadius="normal"
+        boxShadow="card"
+      >
         <MainTitle>Phonebook</MainTitle>
         <Form onSubmit={addContact} />
         <Title>Contacts</Title>
@@ -90,7 +100,7 @@ export default class App extends Component {
           contacts={visibleContact}
           onDeleteContact={deleteContacts}
         />
-      </div>
+      </Box>
     );
   }
 }

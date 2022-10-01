@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormContact, FormLabel, FormInput } from './Form.styled';
+import { Box } from 'components/Box';
+import { FormLabel, FormInput } from './Form.styled';
 import Button from 'components/Button/Button';
 
 export default class Form extends Component {
@@ -33,7 +34,16 @@ export default class Form extends Component {
     const { name, number } = this.state;
     const { handleChange, handleSubmit } = this;
     return (
-      <FormContact onSubmit={handleSubmit}>
+      <Box
+        border="normal"
+        p={3}
+        mb={5}
+        mt={3}
+        display="flex"
+        flexDirection="column"
+        as="form"
+        onSubmit={handleSubmit}
+      >
         <FormLabel htmlFor="name">Name</FormLabel>
         <FormInput
           type="text"
@@ -59,7 +69,7 @@ export default class Form extends Component {
         />
 
         <Button type="submit" text="Add contact" />
-      </FormContact>
+      </Box>
     );
   }
 }
