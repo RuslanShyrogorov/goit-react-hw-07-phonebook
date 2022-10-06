@@ -73,3 +73,7 @@ export default function Form({ onSubmit }) {
     </Box>
   );
 }
+
+Form.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
