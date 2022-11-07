@@ -1,6 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, getFilter } from '../../redux/selectors';
-import { deleteContact } from 'redux/contactsSlice';
+import { useSelector } from 'react-redux';
+import { getFilter } from 'redux/selectors';
+import {
+  useGetContactsQuery,
+  useDeleteContactMutation,
+} from 'redux/contactsApi';
 
 import {
   ListContact,
@@ -9,13 +12,27 @@ import {
 } from './ContactList.styled';
 
 export default function ContactList() {
-  const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const [deleteContact] = useDeleteContactMutation();
+
   const filter = useSelector(getFilter);
 
+  const { data = [], isLoading } = useGetContactsQuery();
+
+  if (isLoading) {
+    return <p>Loading ...</p>;
+  }
+
+  const onDeleteContact = async id => {
+    await deleteContact(id);
+  };
   const filteredContacts = () => {
+    if (!filter) {
+      return data;
+    }
+
     const normalizeFilter = filter.toLowerCase();
-    return contacts.filter(contact =>
+
+    return data?.filter(contact =>
       contact.name.toLowerCase().includes(normalizeFilter)
     );
   };
@@ -25,10 +42,7 @@ export default function ContactList() {
   const contactItem = visibleContact.map(({ id, name, number }) => (
     <ItemContact key={id}>
       <p>{`${name}: ${number}`}</p>
-      <ButtonDelContact
-        type="button"
-        onClick={() => dispatch(deleteContact(id))}
-      >
+      <ButtonDelContact type="button" onClick={() => onDeleteContact(id)}>
         Delete
       </ButtonDelContact>
     </ItemContact>

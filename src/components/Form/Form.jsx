@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+
+import { useAddContactMutation, useGetContactsQuery } from 'redux/contactsApi';
 
 import { Box } from 'components/Box';
 import { FormLabel, FormInput } from './Form.styled';
@@ -9,18 +9,19 @@ import Button from 'components/Button/Button';
 import React from 'react';
 
 export default function Form() {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
 
-  const dispatch = useDispatch();
+  const [addContact, { isLoading }] = useAddContactMutation();
+  const { data } = useGetContactsQuery();
 
   const handleChange = e => {
     switch (e.target.name) {
       case 'name':
-        setName(e.target.value);
+        setNewName(e.target.value);
         break;
       case 'number':
-        setNumber(e.target.value);
+        setNewNumber(e.target.value);
         break;
       default:
         return;
@@ -28,13 +29,25 @@ export default function Form() {
   };
 
   const resetState = () => {
-    setName('');
-    setNumber('');
+    setNewName('');
+    setNewNumber('');
   };
 
-  const handleSubmit = e => {
+  const onCheckRepeatContact = value => {
+    const result = data.find(contact => contact.name === value);
+    return result;
+  };
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    dispatch(addContact({ name, number }));
+    if (onCheckRepeatContact(newName)) {
+      resetState();
+      return alert(`${newName} is already in contacts `);
+    }
+    if (newName.trim().length && newNumber.trim().length) {
+      await addContact({ name: newName, number: newNumber });
+    }
+
     resetState();
   };
 
@@ -53,7 +66,7 @@ export default function Form() {
       <FormInput
         type="text"
         name="name"
-        value={name}
+        value={newName}
         id="name"
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
@@ -65,7 +78,7 @@ export default function Form() {
       <FormInput
         type="tel"
         name="number"
-        value={number}
+        value={newNumber}
         id="tel"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
@@ -73,7 +86,7 @@ export default function Form() {
         onChange={handleChange}
       />
 
-      <Button type="submit" text="Add contact" />
+      <Button type="submit" text="Add contact" disabled={isLoading} />
     </Box>
   );
 }
