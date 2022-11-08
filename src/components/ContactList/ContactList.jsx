@@ -2,29 +2,23 @@ import { useSelector } from 'react-redux';
 import { getFilter } from 'redux/selectors';
 import {
   useGetContactsQuery,
-  useDeleteContactMutation,
+  // useDeleteContactMutation,
 } from 'redux/contactsApi';
 
-import {
-  ListContact,
-  ItemContact,
-  ButtonDelContact,
-} from './ContactList.styled';
+import { Spinner } from 'components/Spinner/Spinner';
+import ContactListItem from 'components/ContactListItem/ContactListItem';
+
+import { ListContact } from './ContactList.styled';
 
 export default function ContactList() {
-  const [deleteContact] = useDeleteContactMutation();
-
   const filter = useSelector(getFilter);
 
   const { data = [], isLoading } = useGetContactsQuery();
 
   if (isLoading) {
-    return <p>Loading ...</p>;
+    return <Spinner />;
   }
 
-  const onDeleteContact = async id => {
-    await deleteContact(id);
-  };
   const filteredContacts = () => {
     if (!filter) {
       return data;
@@ -39,14 +33,14 @@ export default function ContactList() {
 
   const visibleContact = filteredContacts();
 
-  const contactItem = visibleContact.map(({ id, name, number }) => (
-    <ItemContact key={id}>
-      <p>{`${name}: ${number}`}</p>
-      <ButtonDelContact type="button" onClick={() => onDeleteContact(id)}>
-        Delete
-      </ButtonDelContact>
-    </ItemContact>
+  const contactItem = visibleContact.map(contact => (
+    <ContactListItem {...contact} />
   ));
 
-  return <ListContact>{contactItem}</ListContact>;
+  return (
+    <ListContact>
+      {/* {isLoading && <p>Loading ...</p>} */}
+      {contactItem}
+    </ListContact>
+  );
 }

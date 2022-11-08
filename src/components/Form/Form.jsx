@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { useAddContactMutation, useGetContactsQuery } from 'redux/contactsApi';
 
 import { Box } from 'components/Box';
-import { FormLabel, FormInput } from './Form.styled';
-import Button from 'components/Button/Button';
+import { FormLabel, FormInput, Btn } from './Form.styled';
+// import Button from 'components/Button/Button';
 
 import React from 'react';
+import { Spinner } from 'components/Spinner/Spinner';
 
 export default function Form() {
   const [newName, setNewName] = useState('');
@@ -86,7 +87,10 @@ export default function Form() {
         onChange={handleChange}
       />
 
-      <Button type="submit" text="Add contact" disabled={isLoading} />
+      <Btn type="submit" disabled={isLoading}>
+        {isLoading ? <Spinner /> : 'Add contact'}
+        {/* {isLoading ? <Spinner size={2} /> : 'Add contact'} */}
+      </Btn>
     </Box>
   );
 }
